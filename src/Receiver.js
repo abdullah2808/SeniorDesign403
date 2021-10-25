@@ -1,19 +1,20 @@
 import React, { Component } from 'react';
+
 export class Receiver extends Component {
     constructor(props) {
         super(props);
     this.state = {
-        receiver: 'A',
-        angle: '46',
-        gps: 'Lat: Longitude:',
-        signalStrength: '41dB',
+        receiver: props.receiver,
+        angle: props.angle,
+        gps: props.gps,
+        signalStrength: props.signalStrength,
     };
 }
     render() {
         return (
             <div>
                 <div>
-                    <h1>Receiver {this.state.receiver}</h1>
+                    <h1>Receiver: {this.state.receiver}</h1>
                 </div>
                 <div>
                     <p>
