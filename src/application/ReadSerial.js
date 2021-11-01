@@ -3,7 +3,16 @@ const port = new SerialPort('/dev/cu.usbmodem1201', {
   baudRate: 9600
 })
 
-port.on('readable', function () {
-    console.log('Data:', port.read())
-  })
+var getPortsList = (callback) => {
+  var portsList = [];
 
+  SerialPort.list((err, ports) => {
+    ports.forEach((port) => {
+      portsList.push(port.comName);
+    });
+
+    callback(null, portsList);
+  });
+};
+
+    
