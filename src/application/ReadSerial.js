@@ -1,18 +1,22 @@
 const SerialPort = require('serialport')
-const port = new SerialPort('/dev/cu.usbmodem1201', {
+const Delimiter = require('@serialport/parser-delimiter')
+var port = new SerialPort('/dev/cu.usbmodem11301', {
   baudRate: 9600
 })
+var globalData;
 
-var getPortsList = (callback) => {
-  var portsList = [];
+function readSerialData(data) {
+  var buff = data;
+  var temp = JSON.parse(buff.toString());
 
-  SerialPort.list((err, ports) => {
-    ports.forEach((port) => {
-      portsList.push(port.comName);
-    });
+  globalData = temp;
+  console.log(globalData);
+}
 
-    callback(null, portsList);
-  });
-};
+const parser = port.pipe(new Delimiter({ delimiter: '|' }))
+parser.on('data', readSerialData)
+
+  
+
 
     
