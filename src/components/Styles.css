@@ -1,23 +1,70 @@
 .mainstyle {
     width: 100%;
-    padding-bottom: 1px
+    padding-bottom: 1px;
+    background-color: gray;
   }
 
-.receiver {
-    padding-left: 2%;
-    width: 95%;
+.receivers {
+    width: auto;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     position: relative;
+    padding-left: 10%;
+    padding-right: 10%;
+    background-color: gray;
+  }
+
+.receiverA {
+  text-align: center;
+  background-color: lightskyblue;
+  font-family: Menlo, monospace;
+  border-radius: 5%;
+  }
+
+.receiverB {
+  text-align: center;
+  background-color: palevioletred;
+  font-family: Menlo, monospace;
+  border-radius: 5%;
+  }
+.receiverC {
+  text-align: center;
+  background-color: mediumpurple;
+  font-family: Menlo, monospace;
+  border-radius: 5%;
   }
 
 .buttons {
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    width: 100%;
     padding-top: 1%;
     padding-bottom: 1%;
-    justify-self: center;
+    background-color: grey;
+    
   }
 
-
+.button {
+  display:inline-block;
+  padding:0.5em 3em;
+  border:0.16em solid black;
+  margin:0 0.3em 0.3em 0;
+  box-sizing: border-box;
+  text-decoration:none;
+  text-transform:uppercase;
+  font-family: Menlo, monospace;
+  font-weight:400;
+  color: black;
+  text-align:center;
+  transition: all 0.15s;
+}
+.button:hover{
+  color: blue;
+  border-color:#DDDDDD;
+  }
+.button:active{
+  color:#BBBBBB;
+  border-color:#BBBBBB;
+  }

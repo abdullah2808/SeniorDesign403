@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './Styles.css';
 
 export class Receiver extends Component {
     constructor(props) {

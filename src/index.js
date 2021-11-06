@@ -6,10 +6,12 @@ import './components/Receiver.js';
 import Receivers from './components/Receivers';
 
 ReactDOM.render(
-  <React.StrictMode>
-  <SimpleMap/>
-  <Receivers/>
-  </React.StrictMode>,
+  <div className = "mainstyle">
+    <React.StrictMode>
+    <SimpleMap/>
+    <Receivers/>
+    </React.StrictMode>,
+  </div>,
   document.getElementById('root')
 );
 
