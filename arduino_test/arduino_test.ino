@@ -4,12 +4,9 @@
 
 void setup() {
   Serial.begin(9600);
-
-}
-
-void loop() {
-    const int capacity = JSON_ARRAY_SIZE(3) + 4*JSON_OBJECT_SIZE(4);
+  const int capacity = JSON_ARRAY_SIZE(3) + 4*JSON_OBJECT_SIZE(4);
   StaticJsonDocument<capacity> doc;
+
 
   JsonObject obj1 = doc.createNestedObject();
   obj1["receiver"] = "a";
@@ -34,4 +31,9 @@ void loop() {
   serializeJson(doc, Serial);
 
   Serial.write("|");
+
+}
+
+void loop() {
+
 }
