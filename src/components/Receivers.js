@@ -1,28 +1,7 @@
 import Receiver from './Receiver.js';
 import React, { Component } from 'react';
-import './Map.css';
+import './Styles.css';
 
-
-var receiversData = [
-    {
-        receiver: "",
-        angle: 0,
-        gps: 0,
-        signalStrength: 0,
-    },
-    {
-        receiver: "",
-        angle: 0,
-        gps: 0,
-        signalStrength: 0,
-    },
-    {
-        receiver: "",
-        angle: 0,
-        gps: 0,
-        signalStrength: 0,
-    }
-]
 
 
 
@@ -30,7 +9,26 @@ export class Receivers extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            receivers: receiversData,
+            receivers: [
+                {
+                    receiver: "A",
+                    angle: "0",
+                    gps: "0",
+                    signalStrength: "0",
+                },
+                {
+                    receiver: "B",
+                    angle: "0",
+                    gps: "0",
+                    signalStrength: "0",
+                },
+                {
+                    receiver: "C",
+                    angle: "0",
+                    gps: "0",
+                    signalStrength: "0",
+                }
+            ]
         };
         this.pingClick  = this.pingClick.bind(this);
     }
@@ -38,11 +36,18 @@ export class Receivers extends Component {
         fetch("http://localhost:3001/ping")
         .then(response => response.json())
         .then( responseJson=> {
-        console.log(responseJson.data);
-        this.setState({ receivers:responseJson.data });
-
-    },
-  )}
+            this.setState({ receivers:responseJson.data });
+            console.log(this.state.receivers);
+            localStorage.setItem('receivers', responseJson.data);
+        }
+        );
+    }
+    componentDidMount() {
+        this.pingClick();
+        if (localStorage.getItem('receivers') !== null) {
+            this.setState({ receivers: localStorage.getItem('receivers') });
+        }
+    }
     render() {
         return (
             <div>

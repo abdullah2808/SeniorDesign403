@@ -9,19 +9,19 @@ void setup() {
 
 
   JsonObject obj1 = doc.createNestedObject();
-  obj1["receiver"] = "a";
+  obj1["receiver"] = "A";
   obj1["angle"] = "12";
   obj1["gps"] = "40";
   obj1["signalStrength"] = "12";
   
   JsonObject obj2 = doc.createNestedObject();
-  obj2["receiver"] = "b";
+  obj2["receiver"] = "B";
   obj2["angle"] = "12";
   obj2["gps"] = "40";
   obj2["signalStrength"] = "12";
   
   JsonObject obj3 = doc.createNestedObject();
-  obj3["receiver"] = "c";
+  obj3["receiver"] = "C";
   obj3["angle"] = "12";
   obj3["gps"] = "40";
   obj3["signalStrength"] = "12";
