@@ -9,7 +9,13 @@ export class Receiver extends Component {
         gps: props.gps,
         signalStrength: props.signalStrength,
     };
+
+      
 }
+    componentWillReceiveProps(nextProps) {
+        this.setState({ receiver: nextProps.receiver, angle: nextProps.angle, gps: nextProps.gps, signalStrength: nextProps.signalStrength  });  
+  }
+
     render() {
         return (
             <div>
