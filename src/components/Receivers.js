@@ -37,15 +37,13 @@ export class Receivers extends Component {
         .then(response => response.json())
         .then( responseJson=> {
             this.setState({ receivers:responseJson.data });
-            console.log(this.state.receivers);
-            localStorage.setItem('receivers', responseJson.data);
+            localStorage.setItem('receivers', JSON.stringify(responseJson.data));
         }
         );
     }
     componentDidMount() {
-        this.pingClick();
         if (localStorage.getItem('receivers') !== null) {
-            this.setState({ receivers: localStorage.getItem('receivers') });
+            this.setState({ receivers: JSON.parse(localStorage.getItem('receivers')) });
         }
     }
     render() {
