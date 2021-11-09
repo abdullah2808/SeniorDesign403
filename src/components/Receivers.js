@@ -2,9 +2,6 @@ import Receiver from './Receiver.js';
 import React, { Component } from 'react';
 import './Styles.css';
 
-
-
-
 export class Receivers extends Component {
     constructor(props) {
         super(props);
