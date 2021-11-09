@@ -4,13 +4,13 @@
 
 ## HOW TO RUN
 
-### 1. Install NPM
+### 1. Install Node with Node Package Manager
 
-### 2. Clone the Github Repository
+### 2. Clone the Github Repository on to your machine
 
-### 3. Run npm install in the installed repository
+### 3. Run npm install in the installed repository to load node modules
 
-### 4. Run the SerialRoutes.js file with Arduino connected using command node
+### 4. Run the SerialRoutes.js file with Arduino connected using command node -- This runs the backend server for reading serial information
 
-### 5. Run the front end using npm run start
+### 5. Run the front end using npm run start -- This starts the display aspect of the application
 
