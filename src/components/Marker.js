@@ -18,10 +18,11 @@ componentWillReceiveProps(nextProps) {
   render() {
     return (
         <div className = "marker">
-            <p> {this.state.receiver} </p>
+            style={{ backgroundColor: "blue", cursor: 'pointer'}}
+            title={"A"}
         </div>
-    )
-}
+        )
+    }
 }
 
 export default Marker;

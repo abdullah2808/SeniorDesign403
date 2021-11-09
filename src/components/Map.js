@@ -46,8 +46,10 @@ class SimpleMap extends Component {
             defaultCenter={this.state.center}
             defaultZoom={this.state.zoom}
           >
-          <Marker
-            lat={30.6099} lng={-96.3404} text={"A"}/>
+          <p
+            lat={30.6099} lng={-96.3404}>
+            hi
+            </p>
           </GoogleMapReact>
         </div>
       );

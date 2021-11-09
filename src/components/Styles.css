@@ -68,14 +68,3 @@
   color:#BBBBBB;
   border-color:#BBBBBB;
   }
-
-.marker{
-  border: '5px solid #f44336';
-  borderRadius: 1px;
-  backgroundColor: 'white';
-  textAlign: 'center';
-  color: '#3f51b5';
-  fontSize: 16;
-  fontWeight: 'bold';
-  padding: 4;
-}
