@@ -22,15 +22,15 @@ def calculateLocation(signalStrength, frequency, receiverA, receiverB, receiverC
     distanceA = calculateDistance(signalStrength[0], frequency)
     distanceB = calculateDistance(signalStrength[1], frequency)
     distanceC = calculateDistance(signalStrength[2], frequency)
-    angleAx = np.cos(angles[0]) * distanceA
-    angleAy = np.sin(angles[0]) * distanceA
-    angleBx = np.cos(angles[1]) * distanceB
-    angleBy = np.sin(angles[1]) * distanceB
-    angleCx = np.cos(angles[2]) * distanceC
-    angleCy = np.sin(angles[2]) * distanceC
-    locationA = [receiverA[0] + angleAx, receiverA[1] + angleAy]
-    locationB = [receiverB[0] + angleBx, receiverB[1] + angleBy]
-    locationC = [receiverC[0] + angleCx, receiverC[1] + angleCy]
+    distanceAx = np.cos(angles[0]) * distanceA
+    distanceAy = np.sin(angles[0]) * distanceA
+    distanceBx = np.cos(angles[1]) * distanceB
+    distanceBy = np.sin(angles[1]) * distanceB
+    distanceCx = np.cos(angles[2]) * distanceC
+    distanceCy = np.sin(angles[2]) * distanceC
+    locationA = [receiverA[0] + distanceAx, receiverA[1] + distanceAy]
+    locationB = [receiverB[0] + distanceBx, receiverB[1] + distanceBy]
+    locationC = [receiverC[0] + distanceCx, receiverC[1] + distanceCy]
     transmitterLocation = [(locationA[0] + locationB[0] + locationC[0]) / 3, (locationA[1] + locationB[1] + locationC[1]) / 3]
     return transmitterLocation
 
