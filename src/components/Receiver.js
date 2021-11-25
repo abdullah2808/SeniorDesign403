@@ -28,7 +28,7 @@ export class Receiver extends Component {
                         Angle: {this.state.angle}
                     </p>
                     <p>
-                        GPS: {this.state.gps}
+                        GPS: {this.state.gps.lat},  {this.state.gps.lon}
                     </p>
                     <p>
                         Signal Strength: {this.state.signalStrength}

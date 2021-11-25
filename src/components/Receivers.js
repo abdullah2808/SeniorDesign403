@@ -10,19 +10,19 @@ export class Receivers extends Component {
                 {
                     receiver: "A",
                     angle: "0",
-                    gps: "0",
+                    gps: {lat: "0", lon: "0"},
                     signalStrength: "0",
                 },
                 {
                     receiver: "B",
                     angle: "0",
-                    gps: "0",
+                    gps: {lat: "0", lon: "0"},
                     signalStrength: "0",
                 },
                 {
                     receiver: "C",
                     angle: "0",
-                    gps: "0",
+                    gps: {lat: "0", lon: "0"},
                     signalStrength: "0",
                 }
             ]
