@@ -2,21 +2,22 @@
 "receivers": [
     {
         "receiver": "A",
-        "angle": "0",
-        "gps": {"lat": "0", "lon": "0"},
-        "signalStrength": "0"
+        "angle": "305",
+        "gps": {"lat": "31.464863053148537", "lon": "-97.21600291602776"},
+        "signalStrength": "79.1"
     },
     {
-        "receiver": "A",
-        "angle": "0",
-        "gps": {"lat": "0", "lon": "0"},
-        "signalStrength": "0"
+        "receiver": "B",
+        "angle": "179",
+        "gps": {"lat": "31.467848640248782", "lon": "-97.21807780253233"},
+        "signalStrength": "78.10"
     },
     {
-        "receiver": "A",
-        "angle": "0",
-        "gps": {"lat": "0", "lon": "0"},
-        "signalStrength": "0"
+        "receiver": "C",
+        "angle": "56",
+        "gps": {"lat": "31.465134511547053", "lon": "-97.2197810602022"},
+        "signalStrength": "77.6"
     }
-]
+],
+    "result": {"lat": "31.466113402236456", "lon": "-97.21804633136732"}
 }

@@ -4,32 +4,39 @@
 
 void setup() {
   Serial.begin(9600);
-  const int capacity = JSON_ARRAY_SIZE(3) + 4*JSON_OBJECT_SIZE(4);
-  StaticJsonDocument<capacity> doc;
+StaticJsonDocument<384> doc;
 
+JsonArray receivers = doc.createNestedArray("receivers");
 
-  JsonObject obj1 = doc.createNestedObject();
-  obj1["receiver"] = "A";
-  obj1["angle"] = "122";
-  obj1["gps"] = "70";
-  obj1["signalStrength"] = "12";
-  
-  JsonObject obj2 = doc.createNestedObject();
-  obj2["receiver"] = "B";
-  obj2["angle"] = "30";
-  obj2["gps"] = "500";
-  obj2["signalStrength"] = "12";
-  
-  JsonObject obj3 = doc.createNestedObject();
-  obj3["receiver"] = "C";
-  obj3["angle"] = "12";
-  obj3["gps"] = "10";
-  obj3["signalStrength"] = "42";
+JsonObject receivers_0 = receivers.createNestedObject();
+receivers_0["receiver"] = "A";
+receivers_0["angle"] = "305";
 
-  String output;
-  serializeJson(doc, output);
+JsonObject receivers_0_gps = receivers_0.createNestedObject("gps");
+receivers_0_gps["lat"] = "31.464863053148537";
+receivers_0_gps["lon"] = "-97.21600291602776";
+receivers_0["signalStrength"] = "79.1";
+
+JsonObject receivers_1 = receivers.createNestedObject();
+receivers_1["receiver"] = "B";
+receivers_1["angle"] = "179";
+
+JsonArray receivers_1_gps = receivers_1.createNestedArray("gps");
+receivers_1_gps.add("31.464863053148537");
+receivers_1_gps.add("-97.21600291602776");
+receivers_1["signalStrength"] = "78.10";
+
+JsonObject receivers_2 = receivers.createNestedObject();
+receivers_2["receiver"] = "C";
+receivers_2["angle"] = "0";
+
+JsonObject receivers_2_gps = receivers_2.createNestedObject("gps");
+receivers_2_gps["lat"] = "31.465134511547053";
+receivers_2_gps["lon"] = "-97.2197810602022";
+receivers_2["signalStrength"] = "77.6";
+String output;
+serializeJson(doc, output);
   serializeJson(doc, Serial);
-
   Serial.write("|");
 
 }
