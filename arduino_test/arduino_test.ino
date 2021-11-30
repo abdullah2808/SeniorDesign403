@@ -21,7 +21,7 @@ void setup() {
   receivers_1["receiver"] = "B";
   receivers_1["angle"] = "179";
 
-  JsonArray receivers_1_gps = receivers_1.createNestedObject("gps");
+  JsonObject receivers_1_gps = receivers_1.createNestedObject("gps");
   receivers_1_gps["lat"] = "31.464863053148537";
   receivers_1_gps["lon"] = "-97.21600291602776";
   receivers_1["signalStrength"] = "78.10";
