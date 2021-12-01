@@ -33,7 +33,8 @@ export class Receivers extends Component {
         fetch("http://localhost:3001/ping")
         .then(response => response.json())
         .then( responseJson=> {
-            this.setState({ receivers:responseJson.data });
+            console.log(responseJson.data);
+            this.setState({ receivers:responseJson.data.receivers });
             localStorage.setItem('receivers', JSON.stringify(responseJson.data));
         }
         );
