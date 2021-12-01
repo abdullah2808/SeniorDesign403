@@ -7,7 +7,7 @@ frequency = 915.0
 signalstrength = [79.1, 78.10, 77.6]
 
 
-## locations of receivers lat, long
+## locations of receivers [lat, long]
 receiverA = [31.464863053148537, -97.21600291602776] ## A to T 235.18 M
 receiverB = [31.467848640248782, -97.21807780253233] ## B to T 206.66 M
 receiverC = [31.465134511547053, -97.2197810602022] ## C to T 198.73 M
@@ -19,6 +19,8 @@ def calculateDistance(signalStrength, frequency):
     distance = 10 ** ((27.55 - (20 * np.log10(frequency)) + np.abs(signalStrength))/20)
     return distance
 
+
+## Calculate the location of the transmitter using the average of 3 receiver 
 def calculateLocation(signalStrength, frequency, receiverA, receiverB, receiverC):
     distanceA = calculateDistance(signalStrength[0], frequency)
     distanceB = calculateDistance(signalStrength[1], frequency)
