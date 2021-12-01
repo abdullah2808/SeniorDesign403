@@ -35,7 +35,7 @@ export class Receivers extends Component {
         .then( responseJson=> {
             console.log(responseJson.data);
             this.setState({ receivers:responseJson.data.receivers });
-            localStorage.setItem('receivers', JSON.stringify(responseJson.data));
+            localStorage.setItem('receivers', JSON.stringify(responseJson.data.receivers));
         }
         );
     }

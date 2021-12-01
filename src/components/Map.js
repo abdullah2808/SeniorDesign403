@@ -7,27 +7,27 @@ class SimpleMap extends Component {
     super(props);
     this.state = {
       center: {
-        lat: 30.6099,
-        lng: -96.3404
+        lat: 31.464863053148537,
+        lng: -97.21600291602776
       },
-      zoom: 13,
+      zoom: 17,
       receivers: [
         {
             receiver: "A",
             angle: "0",
-            gps: "0",
+            gps: {lat: "0", lon: "0"},
             signalStrength: "0",
         },
         {
             receiver: "B",
             angle: "0",
-            gps: "0",
+            gps: {lat: "0", lon: "0"},
             signalStrength: "0",
         },
         {
             receiver: "C",
             angle: "0",
-            gps: "0",
+            gps: {lat: "0", lon: "0"},
             signalStrength: "0",
         }
     ]
@@ -47,8 +47,16 @@ class SimpleMap extends Component {
             defaultZoom={this.state.zoom}
           >
           <p
-            lat={30.6099} lng={-96.3404}>
-            hi
+            lat={this.state.receivers[0].gps.lat} lng={this.state.receivers[0].gps.lon}>
+            {this.state.receivers[0].receiver}
+            </p>
+            <p
+            lat={this.state.receivers[1].gps.lat} lng={this.state.receivers[1].gps.lon}>
+            {this.state.receivers[1].receiver}
+            </p>
+            <p
+            lat={this.state.receivers[2].gps.lat} lng={this.state.receivers[2].gps.lon}>
+            {this.state.receivers[2].receiver}
             </p>
           </GoogleMapReact>
         </div>
