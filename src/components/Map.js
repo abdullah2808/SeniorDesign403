@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
-import Marker from './Marker.js';
+import Marker from './Marker.tsx';
 
 class SimpleMap extends Component {
   constructor(props) {
@@ -54,22 +54,14 @@ class SimpleMap extends Component {
             defaultCenter={this.state.center}
             defaultZoom={this.state.zoom}
           >
-          <p
-            lat={this.state.receivers[0].gps.lat} lng={this.state.receivers[0].gps.lon}>
-            {this.state.receivers[0].receiver}
-            </p>
-            <p
-            lat={this.state.receivers[1].gps.lat} lng={this.state.receivers[1].gps.lon}>
-            {this.state.receivers[1].receiver}
-            </p>
-            <p
-            lat={this.state.receivers[2].gps.lat} lng={this.state.receivers[2].gps.lon}>
-            {this.state.receivers[2].receiver}
-            </p>
-            <p
-            lat={this.state.lat} lng={this.state.lon}>
-            Transmitter
-            </p>
+          <Marker
+            lat={this.state.receivers[0].gps.lat} lng={this.state.receivers[0].gps.lon} name={"A"} color="lightskyblue"/>
+          <Marker
+            lat={this.state.receivers[1].gps.lat} lng={this.state.receivers[1].gps.lon} name={"B"} color="palevioletred"/>
+          <Marker
+            lat={this.state.receivers[2].gps.lat} lng={this.state.receivers[2].gps.lon} name={"C"} color="mediumpurple"/>
+          <Marker
+            lat={this.state.lat} lng={this.state.lon} name={"D"} color="green"/>
           </GoogleMapReact>
         </div>
       );
