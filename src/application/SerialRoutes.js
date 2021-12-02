@@ -1,7 +1,7 @@
 // Serial Information 
 const express = require('express');
 const cors = require('cors');
-const request = require('request');
+const axios = require('axios');
 const app = express();
 const SerialPort = require('serialport');
 const Delimiter = require('@serialport/parser-delimiter')
@@ -14,7 +14,6 @@ app.listen(3001, () =>
 
 var arduinoPort;
 var globalData;
-
 SerialPort.list().then(function(ports){
   ports.forEach(function(port){
     console.log("Port: ", port);
@@ -54,10 +53,23 @@ app.get("/data", (req, res) => {
 });
 
 app.get('/process', function(req, res) {
-  request('http://127.0.0.1:5000/process', function (error, response, body) {
-      res.send(body); //Display the response on the website
-      console.log(body);
-    });      
+  console.log(JSON.stringify(globalData))
+  var config = {
+    method: 'get',
+    url: 'http://127.0.0.1:5000/process',
+    headers: { 
+      'Content-Type': 'application/json'
+    },
+    data : JSON.stringify(globalData)
+  };
+  axios(config)
+  .then(function (response) {
+    console.log(JSON.stringify(response.data));
+    res.send(JSON.stringify(response.data));
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
 });
 
 
@@ -68,3 +80,4 @@ function readSerialData(data) {
   globalData = temp;
   console.log(globalData);
 }
+
