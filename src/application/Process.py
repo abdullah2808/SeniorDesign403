@@ -7,7 +7,7 @@ from flask import request
 from flask_cors import CORS
 ## Angles of Receivers
 # anglest = [305, 179, 56]
- frequency = 915.0
+frequency = 915.0
 # signalstrengtht = [79.1, 78.10, 77.6]
 
 
