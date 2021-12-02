@@ -25,7 +25,9 @@ export class Receivers extends Component {
                     gps: {lat: "0", lon: "0"},
                     signalStrength: "0"
                 }
-            ]
+            ],
+            lat: "0",
+            lon: "0",
         };
         this.pingClick  = this.pingClick.bind(this);
     }
@@ -33,9 +35,9 @@ export class Receivers extends Component {
         fetch("http://localhost:3001/ping")
         .then(response => response.json())
         .then( responseJson=> {
-            console.log(responseJson.data);
             this.setState({ receivers:responseJson.data.receivers });
             localStorage.setItem('receivers', JSON.stringify(responseJson.data.receivers));
+            this.process();
         }
         );
     }
@@ -43,6 +45,17 @@ export class Receivers extends Component {
         if (localStorage.getItem('receivers') !== null) {
             this.setState({ receivers: JSON.parse(localStorage.getItem('receivers')) });
         }
+    }
+    process()   {
+        fetch("http://localhost:3001/process")
+        .then(response => response.json())
+        .then( responseJson=> {
+            console.log(responseJson);
+            this.setState({ lat:responseJson[0], lon:responseJson[1] });
+            localStorage.setItem('lat', JSON.stringify(responseJson[0]));
+            localStorage.setItem('lon', JSON.stringify(responseJson[1]));
+        }
+    );
     }
     render() {
         return (

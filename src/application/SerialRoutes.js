@@ -1,6 +1,7 @@
 // Serial Information 
 const express = require('express');
 const cors = require('cors');
+const request = require('request');
 const app = express();
 const SerialPort = require('serialport');
 const Delimiter = require('@serialport/parser-delimiter')
@@ -50,6 +51,13 @@ app.get("/data", (req, res) => {
       err
     });
   }
+});
+
+app.get('/process', function(req, res) {
+  request('http://127.0.0.1:5000/process', function (error, response, body) {
+      res.send(body); //Display the response on the website
+      console.log(body);
+    });      
 });
 
 

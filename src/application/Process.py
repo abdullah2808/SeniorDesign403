@@ -1,6 +1,8 @@
 
 import numpy as np
+import json
 import geopy.distance
+from flask import Flask
 ## Angles of Receivers
 angles = [305, 179, 56]
 frequency = 915.0
@@ -13,6 +15,8 @@ receiverB = [31.467848640248782, -97.21807780253233] ## B to T 206.66 M
 receiverC = [31.465134511547053, -97.2197810602022] ## C to T 198.73 M
 
 guessLocation = [31.466113402236456, -97.21804633136732]
+
+
 
 ## Calculate the distance between the transmitter and the receiver using Free Space Path Loss formula 
 def calculateDistance(signalStrength, frequency):
@@ -33,3 +37,12 @@ def calculateLocation(signalStrength, frequency, receiverA, receiverB, receiverC
 transmitterLocation = calculateLocation(signalstrength, frequency, receiverA, receiverB, receiverC)
 
 print(transmitterLocation)
+transmitterJSON = json.dumps(transmitterLocation)
+app = Flask(__name__)
+
+@app.route('/process', methods=['GET'])
+def index():
+    return transmitterJSON
+
+if __name__ == '__main__':
+    app.run(port=5000, debug=True)
