@@ -30,13 +30,21 @@ class SimpleMap extends Component {
             gps: {lat: "0", lon: "0"},
             signalStrength: "0",
         }
-    ]
+    ],
+    lat: "0",
+    lon: "0", 
     };
   }
   componentDidMount() {
     if (localStorage.getItem('receivers') !== null) {
         this.setState({ receivers: JSON.parse(localStorage.getItem('receivers')) });
     }
+    if (localStorage.getItem('lat') !== null) {
+      this.setState({ lat: JSON.parse(localStorage.getItem('lat')) });
+  }
+  if (localStorage.getItem('lon') !== null) {
+    this.setState({ lon: JSON.parse(localStorage.getItem('lon')) });
+}
 }
     render() {
       return (
@@ -57,6 +65,10 @@ class SimpleMap extends Component {
             <p
             lat={this.state.receivers[2].gps.lat} lng={this.state.receivers[2].gps.lon}>
             {this.state.receivers[2].receiver}
+            </p>
+            <p
+            lat={this.state.lat} lng={this.state.lon}>
+            Transmitter
             </p>
           </GoogleMapReact>
         </div>
