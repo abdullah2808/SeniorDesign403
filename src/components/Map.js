@@ -42,8 +42,8 @@ class SimpleMap extends Component {
     if (localStorage.getItem('lat') !== null) {
       this.setState({ lat: JSON.parse(localStorage.getItem('lat')) });
   }
-  if (localStorage.getItem('lon') !== null) {
-    this.setState({ lon: JSON.parse(localStorage.getItem('lon')) });
+    if (localStorage.getItem('lon') !== null) {
+      this.setState({ lon: JSON.parse(localStorage.getItem('lon')) });
 }
 }
     render() {
