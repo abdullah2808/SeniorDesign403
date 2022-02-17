@@ -31,7 +31,7 @@ export class Receivers extends Component {
         };
         this.pingClick  = this.pingClick.bind(this);
     }
-    pingClick() {
+    pingClick() { // Function to retrieve data from the microcontroller 
         fetch("http://localhost:3001/ping")
         .then(response => response.json())
         .then( responseJson=> {
@@ -41,12 +41,12 @@ export class Receivers extends Component {
         }
         );
     }
-    componentDidMount() {
+    componentDidMount() { // Making sure the data persists after refreshing the page
         if (localStorage.getItem('receivers') !== null) {
             this.setState({ receivers: JSON.parse(localStorage.getItem('receivers')) });
         }
     }
-    process()   {
+    process()   { // Function to process the retreived data from the microcontroller
         fetch("http://localhost:3001/process")
         .then(response => response.json())
         .then( responseJson=> {
@@ -54,6 +54,14 @@ export class Receivers extends Component {
             this.setState({ lat:responseJson[0], lon:responseJson[1] });
             localStorage.setItem('lat', JSON.stringify(responseJson[0]));
             localStorage.setItem('lon', JSON.stringify(responseJson[1]));
+        }
+    );
+    }
+    testCommunication() { // Function to test the communication with the microcontroller 
+        fetch("http://localhost:3001/test")
+        .then(response => response.json())
+        .then( responseJson=> {
+            console.log(responseJson);
         }
     );
     }
@@ -67,7 +75,8 @@ export class Receivers extends Component {
             </div>
             <div className = "buttons">
                     <button onClick={this.pingClick} className = "button" > Start Search</button>
-                </div>
+                    <button onClick={this.testCommunication} className = 'button'> Test Communication </button>
+            </div>
             </div>
         
         );
