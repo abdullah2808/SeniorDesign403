@@ -36,11 +36,33 @@ app.get("/ping", (req, res) => {
       parser.on('data', readSerialData);
       res.redirect("/data");
   });
+
+app.get("/test", (req, res) => {
+    port.write("1");
+    console.log("WRITE");
+    parser.on('data', readSerialData);
+    res.redirect("/dataTest");
+  });
 });
 
 app.get("/data", (req, res) => {
   try {
     console.log("Ping")
+    res.status(200).json({
+      data: globalData
+    });
+  } catch (err) {
+    res.status(400).json({
+      message: "Some error occured",
+      err
+    });
+  }
+});
+
+
+app.get("/dataTest", (req, res) => {
+  try {
+    console.log("Test")
     res.status(200).json({
       data: globalData
     });
@@ -76,7 +98,7 @@ app.get('/process', function(req, res) {
 function readSerialData(data) {
   var buff = data;
   var temp = JSON.parse(buff.toString());
-
+  //var temp = buff.toString();
   globalData = temp;
   console.log(globalData);
 }
