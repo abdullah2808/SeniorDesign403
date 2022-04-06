@@ -1,25 +1,64 @@
-
 import numpy as np
 import json
 import geopy.distance
+import warnings
+import time
+import sys
+import serial
+from serial import Serial
+import serial.tools.list_ports
 from flask import Flask
 from flask import request
 from flask_cors import CORS
-## Angles of Receivers
-# anglest = [305, 179, 56]
+
 frequency = 915.0
-# signalstrengtht = [79.1, 78.10, 77.6]
 
 
-# ## locations of receivers [lat, long]
-# receiverAt = [31.464863053148537, -97.21600291602776] ## A to T 235.18 M
-# receiverBt = [31.467848640248782, -97.21807780253233] ## B to T 206.66 M
-# receiverCt = [31.465134511547053, -97.2197810602022] ## C to T 198.73 M
+arduino_ports = [
+    p.device
+    for p in serial.tools.list_ports.comports()
+    if '2341' in p.hwid # may need tweaking to match new arduinos
+]
+if not arduino_ports:
+    raise IOError("No Arduino found")
+if len(arduino_ports) > 1:
+    warnings.warn('Multiple Arduinos found - using the first')
+print(arduino_ports)
+ser = serial.Serial(arduino_ports[0])
 
-guessLocation = [31.466113402236456, -97.21804633136732]
-
-
-
+## Accesing Objects in this format (Data["receivers"][0]["receiver"])
+Data = { ## JSON Format
+	"receivers": [{
+			"receiver": "A",
+			"angle": "305",
+			"gps": {
+				"lat": "31.464863053148537",
+				"lon": "-97.21600291602776"
+			},
+			"signalStrength": "79.1"
+		},
+		{
+			"receiver": "B",
+			"angle": "179",
+			"gps": {
+				"lat": "31.467848640248782",
+				"lon": "-97.21807780253233"
+			},
+			"signalStrength": "78.10"
+		},
+		{
+			"receiver": "C",
+			"angle": "56",
+			"gps": {
+				"lat": "31.465134511547053",
+				"lon": "-97.2197810602022"
+			},
+			"signalStrength": "77.6"
+		}
+	],
+	"lat": "31.466113402236456",
+	"lon": "-97.21804633136732"
+}
 ## Calculate the distance between the transmitter and the receiver using Free Space Path Loss formula 
 def calculateDistance(signalStrength, frequency):
     distance = 10 ** ((27.55 - (20 * np.log10(frequency)) + np.abs(signalStrength))/20)
@@ -39,17 +78,26 @@ def calculateLocation(signalStrength, frequency, receiverA, receiverB, receiverC
 
 app = Flask(__name__)
 CORS(app)
-@app.route('/process', methods=['GET'])
-def process():
-    req = request.get_json()
-    signalstrength = [float(req['receivers'][0]['signalStrength']), float(req['receivers'][1]['signalStrength']), float(req['receivers'][2]['signalStrength'])]
-    angles = [float(req['receivers'][0]['angle']), float(req['receivers'][1]['angle']), float(req['receivers'][2]['angle'])]
-    receiverA = [float(req['receivers'][0]['gps']['lat']), float(req['receivers'][0]['gps']['lon'])]
-    receiverB = [float(req['receivers'][1]['gps']['lat']), float(req['receivers'][1]['gps']['lon'])]
-    receiverC = [float(req['receivers'][2]['gps']['lat']), float(req['receivers'][2]['gps']['lon'])]
-    transmitterLocation = calculateLocation(signalstrength, frequency, receiverA, receiverB, receiverC, angles)
-    transmitterJSON = json.dumps(transmitterLocation)
-    return transmitterJSON
+##@app.route('/process', methods=['GET'])
+@app.route('/test', methods=['GET'])
+# def process():
+#     req = request.get_json()
+#     signalstrength = [float(req['receivers'][0]['signalStrength']), float(req['receivers'][1]['signalStrength']), float(req['receivers'][2]['signalStrength'])]
+#     angles = [float(req['receivers'][0]['angle']), float(req['receivers'][1]['angle']), float(req['receivers'][2]['angle'])]
+#     receiverA = [float(req['receivers'][0]['gps']['lat']), float(req['receivers'][0]['gps']['lon'])]
+#     receiverB = [float(req['receivers'][1]['gps']['lat']), float(req['receivers'][1]['gps']['lon'])]
+#     receiverC = [float(req['receivers'][2]['gps']['lat']), float(req['receivers'][2]['gps']['lon'])]
+#     transmitterLocation = calculateLocation(signalstrength, frequency, receiverA, receiverB, receiverC, angles)
+#     transmitterJSON = json.dumps(transmitterLocation)
+#     return transmitterJSON
+def test():
+    ser.write(bytes('1', 'utf-8'))
+    time.sleep(150)
+    data = str(ser.readline()) + "\n"
+    for i in range(5):
+        data = data + str(ser.readline()) + "\n"
+    return data
+
 
 if __name__ == '__main__':
-    app.run(port=5000, debug=True)
+    app.run(port=3001, debug=True)

@@ -32,12 +32,12 @@ export class Receivers extends Component {
         this.pingClick  = this.pingClick.bind(this);
     }
     pingClick() { // Function to retrieve data from the microcontroller 
-        fetch("http://localhost:3001/ping")
+        fetch("http://127.0.0.1:3001/test")
         .then(response => response.json())
         .then( responseJson=> {
             this.setState({ receivers:responseJson.data.receivers });
             localStorage.setItem('receivers', JSON.stringify(responseJson.data.receivers));
-            this.process();
+            // this.process();
         }
         );
     }
@@ -58,7 +58,7 @@ export class Receivers extends Component {
     );
     }
     testCommunication() { // Function to test the communication with the microcontroller 
-        fetch("http://localhost:3001/test")
+        fetch("http://127.0.0.1:3001/test")
         .then(response => response.json())
         .then( responseJson=> {
             console.log(responseJson);

@@ -8,7 +8,7 @@ const Delimiter = require('@serialport/parser-delimiter')
 
 app.use(cors());
 app.listen(3001, () =>
-  console.log('Example app listening on port 3000!'),
+  console.log('App listening on port 3001!'),
 );
 
 
@@ -28,7 +28,7 @@ SerialPort.list().then(function(ports){
   var port = new SerialPort(arduinoPort, {
     baudRate: 9600
   })
-  const parser = port.pipe(new Delimiter({ delimiter: '|' }))
+  const parser = port.pipe(new Delimiter({ delimiter: '\n' }))
 
 
 app.get("/ping", (req, res) => {
@@ -37,15 +37,17 @@ app.get("/ping", (req, res) => {
       res.redirect("/data");
   });
 
-app.get("/test", (req, res) => {
+app.get("/test", (req, res) => { // Ping 2 basically
     port.write("1");
     console.log("WRITE");
-    parser.on('data', readSerialData);
-    res.redirect("/dataTest");
+    setTimeout(function(){
+      parser.on('data', readSerialData);
+      res.redirect("/dataTest");
+    }, 30);  // DELAY FOR DATA TO BE READ
   });
 });
 
-app.get("/data", (req, res) => {
+app.get("/data", (req, res) => { // original data function
   try {
     console.log("Ping")
     res.status(200).json({
@@ -97,8 +99,8 @@ app.get('/process', function(req, res) {
 
 function readSerialData(data) {
   var buff = data;
-  var temp = JSON.parse(buff.toString());
-  //var temp = buff.toString();
+  //var temp = JSON.parse(buff.toString());
+  var temp = buff.toString();
   globalData = temp;
   console.log(globalData);
 }
