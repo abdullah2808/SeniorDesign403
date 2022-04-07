@@ -39,6 +39,8 @@ export class Receivers extends Component {
             this.setState({ lat:responseJson.lat});
             this.setState({lon:responseJson.lon});
             localStorage.setItem('receivers', JSON.stringify(responseJson.receivers));
+            localStorage.setItem('lat', JSON.stringify(responseJson.lat));
+            localStorage.setItem('lon', JSON.stringify(responseJson.lon));
         }
         );
     }
