@@ -36,20 +36,21 @@ class SimpleMap extends Component {
     };
   }
   componentDidMount() {
+    console.log(this.state)
     if (localStorage.getItem('receivers') !== null) {
         this.setState({ receivers: JSON.parse(localStorage.getItem('receivers')) });
     }
     if (localStorage.getItem('lat') !== null) {
       this.setState({ lat: JSON.parse(localStorage.getItem('lat')) });
       this.setState(state => {
-        state.center.lat = JSON.parse(localStorage.getItem('lat'))
+        state.center.lat = parseFloat(JSON.parse(localStorage.getItem('lat')))
         return state
       })
   }
     if (localStorage.getItem('lon') !== null) {
       this.setState({ lon: JSON.parse(localStorage.getItem('lon')) });
       this.setState(state => {
-        state.center.lon = JSON.parse(localStorage.getItem('lon'))
+        state.center.lng = parseFloat(JSON.parse(localStorage.getItem('lon')))
         return state
       })
 }
