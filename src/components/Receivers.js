@@ -35,9 +35,10 @@ export class Receivers extends Component {
         fetch("http://127.0.0.1:3001/test")
         .then(response => response.json())
         .then( responseJson=> {
-            this.setState({ receivers:responseJson.data.receivers });
-            localStorage.setItem('receivers', JSON.stringify(responseJson.data.receivers));
-            // this.process();
+            this.setState({ receivers:responseJson.receivers });
+            this.setState({ lat:responseJson.lat});
+            this.setState({lon:responseJson.lon});
+            localStorage.setItem('receivers', JSON.stringify(responseJson.receivers));
         }
         );
     }
