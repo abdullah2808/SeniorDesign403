@@ -11,22 +11,23 @@ from flask import Flask
 from flask import request
 from flask_cors import CORS
 
+## Base Frequency for Calculations
 frequency = 915.0
 
+##Finding Arduino
+# arduino_ports = [
+#     p.device
+#     for p in serial.tools.list_ports.comports()
+#     if '2341' in p.hwid # may need tweaking to match new arduinos
+# ]
+# if not arduino_ports:
+#     raise IOError("No Arduino found")
+# if len(arduino_ports) > 1:
+#     warnings.warn('Multiple Arduinos found - using the first')
+# print(arduino_ports)
+# ser = serial.Serial(arduino_ports[0])
 
-arduino_ports = [
-    p.device
-    for p in serial.tools.list_ports.comports()
-    if '2341' in p.hwid # may need tweaking to match new arduinos
-]
-if not arduino_ports:
-    raise IOError("No Arduino found")
-if len(arduino_ports) > 1:
-    warnings.warn('Multiple Arduinos found - using the first')
-print(arduino_ports)
-ser = serial.Serial(arduino_ports[0])
-
-## Accesing Objects in this format (Data["receivers"][0]["receiver"])
+## Accessing Objects in this format (Data["receivers"][0]["receiver"])
 Data = { ## JSON Format
 	"receivers": [{
 			"receiver": "A",
@@ -56,8 +57,8 @@ Data = { ## JSON Format
 			"signalStrength": "77.6"
 		}
 	],
-	"lat": "31.466113402236456",
-	"lon": "-97.21804633136732"
+	"lat": "30.62126180375474",
+	"lon": "-96.340420388974"
 }
 ## Calculate the distance between the transmitter and the receiver using Free Space Path Loss formula 
 def calculateDistance(signalStrength, frequency):
@@ -90,13 +91,15 @@ CORS(app)
 #     transmitterLocation = calculateLocation(signalstrength, frequency, receiverA, receiverB, receiverC, angles)
 #     transmitterJSON = json.dumps(transmitterLocation)
 #     return transmitterJSON
+# def test():
+#     ser.write(bytes('1', 'utf-8'))
+#     time.sleep(150)
+#     data = str(ser.readline()) + "\n"
+#     for i in range(5):
+#         data = data + str(ser.readline()) + "\n"
+#     return data
 def test():
-    ser.write(bytes('1', 'utf-8'))
-    time.sleep(150)
-    data = str(ser.readline()) + "\n"
-    for i in range(5):
-        data = data + str(ser.readline()) + "\n"
-    return data
+    return json.dumps(Data)
 
 
 if __name__ == '__main__':
