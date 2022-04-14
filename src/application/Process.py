@@ -8,7 +8,7 @@ import serial
 from serial import Serial
 import serial.tools.list_ports
 from flask import Flask
-from flask import Datauest
+from flask import request
 from flask_cors import CORS
 
 ## Base frequency for Calculations
