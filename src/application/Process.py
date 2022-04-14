@@ -8,24 +8,24 @@ import serial
 from serial import Serial
 import serial.tools.list_ports
 from flask import Flask
-from flask import request
+from flask import Datauest
 from flask_cors import CORS
 
-## Base Frequency for Calculations
-frequency = 915.0
+## Base FDatauency for Calculations
+fDatauency = 915.0
 
-##Finding Arduino
-# arduino_ports = [
-#     p.device
-#     for p in serial.tools.list_ports.comports()
-#     if '2341' in p.hwid # may need tweaking to match new arduinos
-# ]
-# if not arduino_ports:
-#     raise IOError("No Arduino found")
-# if len(arduino_ports) > 1:
-#     warnings.warn('Multiple Arduinos found - using the first')
-# print(arduino_ports)
-# ser = serial.Serial(arduino_ports[0])
+#Finding Arduino
+arduino_ports = [
+    p.device
+    for p in serial.tools.list_ports.comports()
+    if '2341' in p.hwid # may need tweaking to match new arduinos
+]
+if not arduino_ports:
+    raise IOError("No Arduino found")
+if len(arduino_ports) > 1:
+    warnings.warn('Multiple Arduinos found - using the first')
+print(arduino_ports)
+ser = serial.Serial(arduino_ports[0])
 
 ## Accessing Objects in this format (Data["receivers"][0]["receiver"])
 Data = { ## JSON Format
@@ -61,43 +61,124 @@ Data = { ## JSON Format
 	"lon": "-96.340420388974"
 }
 ## Calculate the distance between the transmitter and the receiver using Free Space Path Loss formula 
-def calculateDistance(signalStrength, frequency):
-    distance = 10 ** ((27.55 - (20 * np.log10(frequency)) + np.abs(signalStrength))/20)
+def calculateDistance(signalStrength, fDatauency):
+    distance = 10 ** ((27.55 - (20 * np.log10(fDatauency)) + np.abs(signalStrength))/20)
     return distance
 
 
 ## Calculate the location of the transmitter using the average of 3 receiver 
-def calculateLocation(signalStrength, frequency, receiverA, receiverB, receiverC, angles):
-    distanceA = calculateDistance(signalStrength[0], frequency)
-    distanceB = calculateDistance(signalStrength[1], frequency)
-    distanceC = calculateDistance(signalStrength[2], frequency)
+def calculateLocation(signalStrength, fDatauency, receiverA, receiverB, receiverC, angles):
+    distanceA = calculateDistance(signalStrength[0], fDatauency)
+    distanceB = calculateDistance(signalStrength[1], fDatauency)
+    distanceC = calculateDistance(signalStrength[2], fDatauency)
     AtoT = geopy.distance.distance(meters=distanceA).destination((receiverA[0], receiverA[1]), bearing=angles[0])
     BtoT = geopy.distance.distance(meters=distanceB).destination((receiverB[0], receiverB[1]), bearing=angles[1])
     CtoT = geopy.distance.distance(meters=distanceC).destination((receiverC[0], receiverC[1]), bearing=angles[2])
     transmitterLocation = [(AtoT.latitude + BtoT.latitude + CtoT.latitude) / 3, (AtoT.longitude + BtoT.longitude + CtoT.longitude) / 3]
     return transmitterLocation
 
+def process():
+    signalstrength = [float(Data['receivers'][0]['signalStrength']), float(Data['receivers'][1]['signalStrength']), float(Data['receivers'][2]['signalStrength'])]
+    angles = [float(Data['receivers'][0]['angle']), float(Data['receivers'][1]['angle']), float(Data['receivers'][2]['angle'])]
+    receiverA = [float(Data['receivers'][0]['gps']['lat']), float(Data['receivers'][0]['gps']['lon'])]
+    receiverB = [float(Data['receivers'][1]['gps']['lat']), float(Data['receivers'][1]['gps']['lon'])]
+    receiverC = [float(Data['receivers'][2]['gps']['lat']), float(Data['receivers'][2]['gps']['lon'])]
+    transmitterLocation = calculateLocation(signalstrength, fDatauency, receiverA, receiverB, receiverC, angles)
+    Data['lat'] = transmitterLocation[0]
+    Data['lon'] = transmitterLocation[1]
 app = Flask(__name__)
 CORS(app)
 ##@app.route('/process', methods=['GET'])
 @app.route('/test', methods=['GET'])
-# def process():
-#     req = request.get_json()
-#     signalstrength = [float(req['receivers'][0]['signalStrength']), float(req['receivers'][1]['signalStrength']), float(req['receivers'][2]['signalStrength'])]
-#     angles = [float(req['receivers'][0]['angle']), float(req['receivers'][1]['angle']), float(req['receivers'][2]['angle'])]
-#     receiverA = [float(req['receivers'][0]['gps']['lat']), float(req['receivers'][0]['gps']['lon'])]
-#     receiverB = [float(req['receivers'][1]['gps']['lat']), float(req['receivers'][1]['gps']['lon'])]
-#     receiverC = [float(req['receivers'][2]['gps']['lat']), float(req['receivers'][2]['gps']['lon'])]
-#     transmitterLocation = calculateLocation(signalstrength, frequency, receiverA, receiverB, receiverC, angles)
-#     transmitterJSON = json.dumps(transmitterLocation)
-#     return transmitterJSON
-# def test():
-#     ser.write(bytes('1', 'utf-8'))
-#     time.sleep(150)
-#     data = str(ser.readline()) + "\n"
-#     for i in range(5):
-#         data = data + str(ser.readline()) + "\n"
-#     return data
+
+def test():
+    ser.write(bytes('1', 'utf-8'))
+    time.sleep(150)
+    data = str(ser.readline()) + "\n"
+    for i in range(5):
+        data = data + str(ser.readline()) + "\n"
+        if data[10] == "A":
+            Data["receivers"][0]["receiver"] = "A"
+            I = 12
+            string = ""
+            while data[I] != "|":
+                string = string + data[I]
+                I = I + 1
+            Data["receivers"][0]["gps"]["lat"] = string
+            string = ""
+            I = I + 1
+            print(data[I])
+            while data[I] != "|":
+                print(string)
+                string = string + data[I]
+                I = I + 1
+            Data["receivers"][0]["gps"]["lon"] = string
+            string = ""
+            I = I + 1
+            while data[I] != "|":
+                string = string + data[I]
+                I = I + 1
+            Data["receivers"][0]["signalStrength"] = string
+            string = ""
+            I = I + 1
+            while data[I] != ",":
+                string = string + data[I]
+                I = I + 1
+            Data["receivers"][0]["angle"] = string
+        elif data[10] == "B":
+            Data["receivers"][1]["receiver"] = "B"
+            I = 12
+            string = ""
+            while data[I] != "|":
+                string = string + data[I]
+                I = I + 1
+            Data["receivers"][1]["gps"]["lat"] = string
+            string = ""
+            I = I + 1
+            while data[I] != "|":
+                string = string + data[I]
+                I = I + 1
+            Data["receivers"][1]["gps"]["lon"] = string
+            string = ""
+            I = I + 1
+            while data[I] != "|":
+                string = string + data[I]
+                I = I + 1
+            Data["receivers"][1]["signalStrength"] = string
+            string = ""
+            I = I + 1
+            while data[I] != ",":
+                string = string + data[I]
+                I = I + 1
+            Data["receivers"][1]["angle"] = string
+        elif data[10] == "C":
+            Data["receivers"][2]["receiver"] = "C"
+            I = 12
+            string = ""
+            while data[I] != "|":
+                string = string + data[I]
+                I = I + 1
+            Data["receivers"][2]["gps"]["lat"] = string
+            string = ""
+            I = I + 1
+            while data[I] != "|":
+                string = string + data[I]
+                I = I + 1
+            Data["receivers"][2]["gps"]["lon"] = string
+            string = ""
+            I = I + 1
+            while data[I] != "|":
+                string = string + data[I]
+                I = I + 1
+            Data["receivers"][2]["signalStrength"] = string
+            string = ""
+            I = I + 1
+            while data[I] != ",":
+                string = string + data[I]
+                I = I + 1
+            Data["receivers"][2]["angle"] = string
+    process()
+    return json.dumps(Data)
 def test():
     return json.dumps(Data)
 
