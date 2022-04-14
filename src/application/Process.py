@@ -11,8 +11,8 @@ from flask import Flask
 from flask import Datauest
 from flask_cors import CORS
 
-## Base FDatauency for Calculations
-fDatauency = 915.0
+## Base frequency for Calculations
+frequency = 915.0
 
 #Finding Arduino
 arduino_ports = [
@@ -61,16 +61,16 @@ Data = { ## JSON Format
 	"lon": "-96.340420388974"
 }
 ## Calculate the distance between the transmitter and the receiver using Free Space Path Loss formula 
-def calculateDistance(signalStrength, fDatauency):
-    distance = 10 ** ((27.55 - (20 * np.log10(fDatauency)) + np.abs(signalStrength))/20)
+def calculateDistance(signalStrength, frequency):
+    distance = 10 ** ((27.55 - (20 * np.log10(frequency)) + np.abs(signalStrength))/20)
     return distance
 
 
 ## Calculate the location of the transmitter using the average of 3 receiver 
-def calculateLocation(signalStrength, fDatauency, receiverA, receiverB, receiverC, angles):
-    distanceA = calculateDistance(signalStrength[0], fDatauency)
-    distanceB = calculateDistance(signalStrength[1], fDatauency)
-    distanceC = calculateDistance(signalStrength[2], fDatauency)
+def calculateLocation(signalStrength, frequency, receiverA, receiverB, receiverC, angles):
+    distanceA = calculateDistance(signalStrength[0], frequency)
+    distanceB = calculateDistance(signalStrength[1], frequency)
+    distanceC = calculateDistance(signalStrength[2], frequency)
     AtoT = geopy.distance.distance(meters=distanceA).destination((receiverA[0], receiverA[1]), bearing=angles[0])
     BtoT = geopy.distance.distance(meters=distanceB).destination((receiverB[0], receiverB[1]), bearing=angles[1])
     CtoT = geopy.distance.distance(meters=distanceC).destination((receiverC[0], receiverC[1]), bearing=angles[2])
@@ -83,7 +83,7 @@ def process():
     receiverA = [float(Data['receivers'][0]['gps']['lat']), float(Data['receivers'][0]['gps']['lon'])]
     receiverB = [float(Data['receivers'][1]['gps']['lat']), float(Data['receivers'][1]['gps']['lon'])]
     receiverC = [float(Data['receivers'][2]['gps']['lat']), float(Data['receivers'][2]['gps']['lon'])]
-    transmitterLocation = calculateLocation(signalstrength, fDatauency, receiverA, receiverB, receiverC, angles)
+    transmitterLocation = calculateLocation(signalstrength, frequency, receiverA, receiverB, receiverC, angles)
     Data['lat'] = transmitterLocation[0]
     Data['lon'] = transmitterLocation[1]
 app = Flask(__name__)
