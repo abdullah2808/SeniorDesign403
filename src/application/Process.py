@@ -179,8 +179,7 @@ def test():
             Data["receivers"][2]["angle"] = string
     process()
     return json.dumps(Data)
-def test():
-    return json.dumps(Data)
+
 
 
 if __name__ == '__main__':
