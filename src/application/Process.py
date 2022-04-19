@@ -10,6 +10,7 @@ import serial.tools.list_ports
 from flask import Flask
 from flask import request
 from flask_cors import CORS
+## +RCV=0,32,A|30.600496|-96.342002|-65.0|73.,-36,37
 
 ## Base frequency for Calculations
 frequency = 433.0
@@ -25,7 +26,7 @@ if not arduino_ports:
 if len(arduino_ports) > 1:
     warnings.warn('Multiple Arduinos found - using the first')
 print(arduino_ports)
-ser = serial.Serial(arduino_ports[0])
+ser = serial.Serial(arduino_ports[0], 115200)
 
 ## Accessing Objects in this format (Data["receivers"][0]["receiver"])
 Data = { ## JSON Format
@@ -97,10 +98,10 @@ def test():
     data = str(ser.readline())
     print(data, file=sys.stderr)
     for i in range(5):
-        print(i, file=sys.stderr)
         data = str(ser.readline())
         if len(data) >= 11:
-            print(data[10], file=sys.stderr)
+            print(data[12], file=sys.stderr)
+            print(data, file=sys.stderr)
             if data[12] == "A":
                 Data["receivers"][0]["receiver"] = "A"
                 I = 14
