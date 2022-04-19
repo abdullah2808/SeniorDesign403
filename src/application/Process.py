@@ -12,7 +12,7 @@ from flask import request
 from flask_cors import CORS
 
 ## Base frequency for Calculations
-frequency = 915.0
+frequency = 433.0
 
 #Finding Arduino
 arduino_ports = [
@@ -57,8 +57,8 @@ Data = { ## JSON Format
 			"signalStrength": "77.6"
 		}
 	],
-	"lat": "30.62126180375474",
-	"lon": "-96.340420388974"
+	"lat": "0",
+	"lon": "0"
 }
 ## Calculate the distance between the transmitter and the receiver using Free Space Path Loss formula 
 def calculateDistance(signalStrength, frequency):
@@ -94,90 +94,94 @@ CORS(app)
 def test():
     ser.write(bytes('1', 'utf-8'))
     time.sleep(150)
-    data = str(ser.readline()) + "\n"
+    data = str(ser.readline())
+    print(data, file=sys.stderr)
     for i in range(5):
-        data = data + str(ser.readline()) + "\n"
-        if data[10] == "A":
-            Data["receivers"][0]["receiver"] = "A"
-            I = 12
-            string = ""
-            while data[I] != "|":
-                string = string + data[I]
+        print(i, file=sys.stderr)
+        data = str(ser.readline())
+        if len(data) >= 11:
+            print(data[10], file=sys.stderr)
+            if data[12] == "A":
+                Data["receivers"][0]["receiver"] = "A"
+                I = 14
+                string = ""
+                while data[I] != "|":
+                    string = string + data[I]
+                    I = I + 1
+                Data["receivers"][0]["gps"]["lat"] = string
+                string = ""
                 I = I + 1
-            Data["receivers"][0]["gps"]["lat"] = string
-            string = ""
-            I = I + 1
-            print(data[I])
-            while data[I] != "|":
-                print(string)
-                string = string + data[I]
+                print(data[I])
+                while data[I] != "|":
+                    string = string + data[I]
+                    I = I + 1
+                Data["receivers"][0]["gps"]["lon"] = string
+                string = ""
                 I = I + 1
-            Data["receivers"][0]["gps"]["lon"] = string
-            string = ""
-            I = I + 1
-            while data[I] != "|":
-                string = string + data[I]
+                while data[I] != "|":
+                    string = string + data[I]
+                    I = I + 1
+                Data["receivers"][0]["signalStrength"] = string
+                string = ""
                 I = I + 1
-            Data["receivers"][0]["signalStrength"] = string
-            string = ""
-            I = I + 1
-            while data[I] != ",":
-                string = string + data[I]
+                while data[I] != ",":
+                    string = string + data[I]
+                    I = I + 1
+                Data["receivers"][0]["angle"] = string
+            elif data[12] == "B":
+                Data["receivers"][1]["receiver"] = "B"
+                I = 14
+                string = ""
+                while data[I] != "|":
+                    string = string + data[I]
+                    I = I + 1
+                Data["receivers"][1]["gps"]["lat"] = string
+                string = ""
                 I = I + 1
-            Data["receivers"][0]["angle"] = string
-        elif data[10] == "B":
-            Data["receivers"][1]["receiver"] = "B"
-            I = 12
-            string = ""
-            while data[I] != "|":
-                string = string + data[I]
+                while data[I] != "|":
+                    string = string + data[I]
+                    I = I + 1
+                Data["receivers"][1]["gps"]["lon"] = string
+                string = ""
                 I = I + 1
-            Data["receivers"][1]["gps"]["lat"] = string
-            string = ""
-            I = I + 1
-            while data[I] != "|":
-                string = string + data[I]
+                while data[I] != "|":
+                    string = string + data[I]
+                    I = I + 1
+                Data["receivers"][1]["signalStrength"] = string
+                string = ""
                 I = I + 1
-            Data["receivers"][1]["gps"]["lon"] = string
-            string = ""
-            I = I + 1
-            while data[I] != "|":
-                string = string + data[I]
+                while data[I] != ",":
+                    string = string + data[I]
+                    I = I + 1
+                Data["receivers"][1]["angle"] = string
+            elif data[12] == "C":
+                Data["receivers"][2]["receiver"] = "C"
+                I = 14
+                string = ""
+                while data[I] != "|":
+                    string = string + data[I]
+                    I = I + 1
+                Data["receivers"][2]["gps"]["lat"] = string
+                string = ""
                 I = I + 1
-            Data["receivers"][1]["signalStrength"] = string
-            string = ""
-            I = I + 1
-            while data[I] != ",":
-                string = string + data[I]
+                while data[I] != "|":
+                    string = string + data[I]
+                    I = I + 1
+                Data["receivers"][2]["gps"]["lon"] = string
+                string = ""
                 I = I + 1
-            Data["receivers"][1]["angle"] = string
-        elif data[10] == "C":
-            Data["receivers"][2]["receiver"] = "C"
-            I = 12
-            string = ""
-            while data[I] != "|":
-                string = string + data[I]
+                while data[I] != "|":
+                    string = string + data[I]
+                    I = I + 1
+                Data["receivers"][2]["signalStrength"] = string
+                string = ""
                 I = I + 1
-            Data["receivers"][2]["gps"]["lat"] = string
-            string = ""
-            I = I + 1
-            while data[I] != "|":
-                string = string + data[I]
-                I = I + 1
-            Data["receivers"][2]["gps"]["lon"] = string
-            string = ""
-            I = I + 1
-            while data[I] != "|":
-                string = string + data[I]
-                I = I + 1
-            Data["receivers"][2]["signalStrength"] = string
-            string = ""
-            I = I + 1
-            while data[I] != ",":
-                string = string + data[I]
-                I = I + 1
-            Data["receivers"][2]["angle"] = string
+                while data[I] != ",":
+                    string = string + data[I]
+                    I = I + 1
+                Data["receivers"][2]["angle"] = string
     process()
+    print(Data, file=sys.stderr)
     return json.dumps(Data)
 
 
