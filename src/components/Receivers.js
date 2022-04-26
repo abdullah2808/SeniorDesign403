@@ -67,8 +67,5 @@ export class Receivers extends Component {
     }
 }
 
-
-
-
 export default Receivers;
 

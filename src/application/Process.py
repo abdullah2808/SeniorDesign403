@@ -10,7 +10,8 @@ import serial.tools.list_ports
 from flask import Flask
 from flask import request
 from flask_cors import CORS
-## +RCV=0,32,A|30.600496|-96.342002|-65.0|73.,-36,37
+
+## +RCV=0,32,A|30.600496|-96.342002|-65.0|73.,-36,37 format for received Data
 
 ## Base frequency for Calculations
 frequency = 433.0
@@ -87,9 +88,10 @@ def process():
     transmitterLocation = calculateLocation(signalstrength, frequency, receiverA, receiverB, receiverC, angles)
     Data['lat'] = transmitterLocation[0]
     Data['lon'] = transmitterLocation[1]
+
+#Starting the Flask App and setting up endpoints
 app = Flask(__name__)
 CORS(app)
-##@app.route('/process', methods=['GET'])
 @app.route('/test', methods=['GET'])
 
 def test():
