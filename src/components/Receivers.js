@@ -59,7 +59,6 @@ export class Receivers extends Component {
             </div>
             <div className = "buttons">
                     <button onClick={this.startSearch} className = "button" > Start Search</button>
-                    <button onClick={this.testCommunication} className = 'button'> Test Communication </button>
             </div>
             </div>
         
