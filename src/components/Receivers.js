@@ -29,9 +29,9 @@ export class Receivers extends Component {
             lat: "0",
             lon: "0",
         };
-        this.pingClick  = this.pingClick.bind(this);
+        this.startSearch  = this.startSearch.bind(this);
     }
-    pingClick() { // Function to retrieve data from the microcontroller 
+    startSearch() { // Function to retrieve data from the microcontroller 
         fetch("http://127.0.0.1:3001/test")
         .then(response => response.json())
         .then( responseJson=> {
@@ -49,25 +49,6 @@ export class Receivers extends Component {
             this.setState({ receivers: JSON.parse(localStorage.getItem('receivers')) });
         }
     }
-    process()   { // Function to process the retreived data from the microcontroller
-        fetch("http://localhost:3001/process")
-        .then(response => response.json())
-        .then( responseJson=> {
-            console.log(responseJson);
-            this.setState({ lat:responseJson[0], lon:responseJson[1] });
-            localStorage.setItem('lat', JSON.stringify(responseJson[0]));
-            localStorage.setItem('lon', JSON.stringify(responseJson[1]));
-        }
-    );
-    }
-    testCommunication() { // Function to test the communication with the microcontroller 
-        fetch("http://127.0.0.1:3001/test")
-        .then(response => response.json())
-        .then( responseJson=> {
-            console.log(responseJson);
-        }
-    );
-    }
     render() {
         return (
             <div>
@@ -77,7 +58,7 @@ export class Receivers extends Component {
                 <div className = "receiverC">  <Receiver receiver = { this.state.receivers[2].receiver} angle = {this.state.receivers[2].angle} gps = {this.state.receivers[2].gps} signalStrength = {this.state.receivers[2].signalStrength}/> </div>
             </div>
             <div className = "buttons">
-                    <button onClick={this.pingClick} className = "button" > Start Search</button>
+                    <button onClick={this.startSearch} className = "button" > Start Search</button>
                     <button onClick={this.testCommunication} className = 'button'> Test Communication </button>
             </div>
             </div>
