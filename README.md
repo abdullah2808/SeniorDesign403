@@ -10,9 +10,7 @@
 
 ### 3. Run npm install in the installed repository to load node modules
 
-### 4. Run the SerialRoutes.js file with Arduino connected using command node -- This runs the backend server for reading serial information
+### 4. Run the Process.py file after installing the required modules VIA pip -- This runs the Flask server for processing of location and pulling data from the arduino - You may need certain pip modules
 
-### 5. Run the Process.py file after installing the required modules VIA pip -- This runs the Flask server for processing of location
-
-### 6. Run the front end using npm run start -- This starts the display aspect of the application
+### 5. Run the front end using npm run start -- This starts the display aspect of the application
 
