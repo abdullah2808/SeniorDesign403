@@ -58,8 +58,8 @@ Data = { ## JSON Format
 			"signalStrength": "77.6"
 		}
 	],
-	"lat": "0",
-	"lon": "0"
+	"lat": "2",
+	"lon": "3"
 }
 ## Calculate the distance between the transmitter and the receiver using Free Space Path Loss formula 
 def calculateDistance(signalStrength, frequency):
@@ -67,7 +67,7 @@ def calculateDistance(signalStrength, frequency):
     return distance
 
 
-## Calculate the location of the transmitter using the average of 3 receiver 
+## Calculate the location of the transmitter using the average of 3 receiver The angle here is from north being 0 degrees
 def calculateLocation(signalStrength, frequency, receiverA, receiverB, receiverC, angles):
     distanceA = calculateDistance(signalStrength[0], frequency)
     distanceB = calculateDistance(signalStrength[1], frequency)
@@ -94,7 +94,7 @@ CORS(app)
 
 def test():
     ser.write(bytes('1', 'utf-8'))
-    time.sleep(150)
+    time.sleep(180)
     data = str(ser.readline())
     print(data, file=sys.stderr)
     for i in range(5):
